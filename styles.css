@@ -1,0 +1,41 @@
+html {
+    font-size: 62.5%;
+}
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+body {
+    background: linear-gradient(180deg, rgb(0, 154, 214) 0%, rgb(255, 255, 255) 100%);
+}
+.main {
+    height: 600px;
+    text-align: center;
+    margin: 200px auto;
+    font-size: 2.3rem;
+    color: white;
+}
+.title {
+    margin-bottom: 20px;
+}
+.main h3{
+    font-weight: 500;
+}
+.newBookBtn{
+    color: white;
+    background-color: rgb(19, 45, 94);
+    padding: 15px 30px;
+    font-size: 1.7rem;
+    border: none;
+    font-weight: 700;
+    border-radius: 30px;
+    margin-top: 30px;
+    transition: 0.2s ease-in-out;
+    cursor: pointer;
+}
+.newBookBtn:hover {
+    background-color: rgb(12, 34, 75);
+    transition: 0.2s ease-in-out;
+}

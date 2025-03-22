@@ -40,7 +40,6 @@ body {
     transition: 0.2s ease-in-out;
 }
 .bookInfo {
-    display: none;
     position: absolute;
     z-index: 1;
     width: fit-content;
@@ -53,6 +52,7 @@ body {
     left: 50%;
     transform: translate(-50%, -50%);
     /* box-shadow: rgba(0, 0, 0, 0.4) 0 0 0 1000px; */
+    font-size: 2.3rem;
 }
 .bookInfo li {
     display: flex;
@@ -76,6 +76,7 @@ body {
 .checkBoxDiv {
     display: flex;
     align-items: center;
+    margin-top: 20px;
 }
 .checkBoxDiv input {
     width: 20px;
@@ -94,6 +95,10 @@ body {
     background-color: rgb(19, 45, 94);
     color: white;
     margin-left: 20px;
+    cursor: pointer;
+}
+.sendBtn:hover {
+    background-color: rgb(12, 34, 75);
 }
 .closeBookInfoBtn {
    display: flex;
@@ -104,4 +109,5 @@ body {
    border: none;
    font-size: 3rem;
    margin-right: -20px;
+   cursor: pointer;
 }

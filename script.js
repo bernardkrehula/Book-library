@@ -1,5 +1,4 @@
 const newBookBtn = document.querySelector('.newBookBtn');
-const closeBookInfo = document.querySelector('.closeBookInfoBtn');
 const sendBtn = document.querySelector('.sendBtn');
 const main = document.querySelector('.main');
 
@@ -39,12 +38,21 @@ function bookInfoDivCreator() {
             </div>
         </div>
     `;
-    main.insertAdjacentHTML('afterend', html);   
+    main.insertAdjacentHTML('beforeend', html);   
 }
+
 newBookBtn.addEventListener('click', () => {
     bookInfoDivCreator();
 })
 
+main.addEventListener('click', (e) => {
+    let bookInfoBtn = e.target.closest('button');
+    let closestDiv = e.target.closest('div');
+
+    if(bookInfoBtn && bookInfoBtn.classList.contains('closeBookInfoBtn')){
+        main.removeChild(closestDiv);
+    } 
+})
 /* bookInfo.addEventListener('click', (event) => {
     console.log(event.target)
 }) */

@@ -51,7 +51,7 @@ body {
     top: 45%;
     left: 50%;
     transform: translate(-50%, -50%);
-    /* box-shadow: rgba(0, 0, 0, 0.4) 0 0 0 1000px; */
+    box-shadow: rgba(0, 0, 0, 0.4) 0 0 0 1000px;
     font-size: 2.3rem;
 }
 .bookInfo li {

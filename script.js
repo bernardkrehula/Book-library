@@ -1,6 +1,10 @@
-const newBookBtn = document.querySelector('.newBookBtn');
 const main = document.querySelector('.main');
 const booksDiv = document.querySelector('.books');
+const bookForm = document.querySelector('.bookForm')
+const newBookBtn = document.querySelector('.newBookBtn');
+const closeBookFormBtn = document.querySelector('.closeBookFormBtn');
+const sendBtn = document.querySelector('.sendBtn');
+
 
 function bookCreator(title, author, pages) {
     let id = crypto.randomUUID();
@@ -19,57 +23,64 @@ function bookCreator(title, author, pages) {
 //Napraviti formu umjesto diva
 
 function manageBooks() {
-    const books = [];
+    let books = [];
 
     const pushBooksInArray = (book) => {
         books.push(book);
     }
-    const removeBookFromArray = () => {
-        // books.filter(book => book.getId() != );
+    const removeBookFromArray = (bookId) => {
+        books = books.filter(book => book.getId() != bookId);
+        return books;
     }
     const returnArray = () => { return books };
 
-    return { pushBooksInArray, returnArray };
+    return { pushBooksInArray, returnArray, removeBookFromArray };
 }
 const manager = manageBooks();
 
 function displayNewBook(book){
     let html = `
-    <div class="addedBook">
+    <div class="addedBook" id="${book.getId()}">
             <h3>${book.getBookTitle()}</h3>
             <h4>${book.getBookAuthor()}</h4>
             <p>${book.getBookPages()}</p>
             <div class="addedBookButtons">
                 <button>Unread</button>
-                <button>Delete Book</button>
+                <button class="delete">Delete Book</button>
                 <button>Edit</button>
             </div>
         </div>
     `
     booksDiv.insertAdjacentHTML('beforeend', html)
 }
-newBookBtn.addEventListener('click', () => {
-    bookInfoDivCreator();
+newBookBtn.addEventListener('click', (e) => {
+    bookForm.style.display = 'block';
+})
+bookForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    bookForm.style.display = 'none';
+
+    let bookTitle = document.querySelector('.bookTitle').value;
+    let author = document.querySelector('.author').value;
+    let bookPages = document.querySelector('.pages').value;
+
+    const newBook = bookCreator(bookTitle, author, bookPages);
+    manager.pushBooksInArray(newBook);
+    displayNewBook(newBook); 
+
 })
 
-main.addEventListener('click', (e) => {
-    let bookInfoBtn = e.target.closest('button');
-    let bookInfo = document.querySelector('.bookInfo');
-    let id = e.target.id;
-  
-    
-    if(bookInfoBtn && bookInfoBtn.classList.contains('sendBtn')){
-        let bookTitle = document.querySelector('.bookTitle').value;
-        let author = document.querySelector('.author').value;
-        let bookPages = document.querySelector('.pages').value;
+closeBookFormBtn.addEventListener('click', () => {
+    bookForm.style.display = 'none';
+}) 
 
-        const newBook = bookCreator(bookTitle, author, bookPages);
-        manager.pushBooksInArray(newBook);
-        displayNewBook(newBook);
-      
-        main.removeChild(bookInfo);
+main.addEventListener('click', (e) => {
+    let deleteBtn = e.target.closest('button');
+    let bookDiv = e.target.closest('.addedBook');
+ 
+    if(deleteBtn){
+        if(deleteBtn.className === 'delete'){
+            manager.removeBookFromArray(bookDiv.id);
+        }
     }
-    if(bookInfoBtn && bookInfoBtn.classList.contains('closeBookInfoBtn')){
-        main.removeChild(bookInfo);
-    } 
 })

@@ -5,10 +5,11 @@ html {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    overflow: hidden;
+   
 }
 body {
     background: linear-gradient(180deg, rgb(0, 154, 214) 0%, rgb(255, 255, 255) 100%);
+    background-attachment: fixed;
 }
 .main {
     height: 600px;
@@ -96,9 +97,11 @@ body {
     color: white;
     margin-left: 20px;
     cursor: pointer;
+    transition: 0.2s ease-in-out;
 }
 .sendBtn:hover {
     background-color: rgb(12, 34, 75);
+    transition: 0.2s ease-in-out;
 }
 .closeBookInfoBtn {
    display: flex;
@@ -110,4 +113,57 @@ body {
    font-size: 3rem;
    margin-right: -20px;
    cursor: pointer;
+}
+.books {
+    display: grid;
+    margin-top: 100px;
+    margin-left: 300px;
+    margin-right: 300px;
+    justify-content: space-around;
+    grid-template-columns: repeat(3, 1fr);
+}
+.addedBook {
+    width: fit-content;
+    background-color: white;
+    color: black;
+    border-radius: 15px;
+    padding: 40px 30px;
+    transition: 0.4s ease-in-out;
+    box-shadow: rgb(0, 0, 0, 0.2) 0 0 40px 2px;
+    margin-bottom: 30px;
+}
+.addedBook:hover {
+    scale: 1.1;
+    transition: 0.4s ease-in-out;
+}
+.addedBookButtons{
+    display: flex;
+    gap: 20px;
+}
+.addedBookButtons button {
+    color: white;
+    background-color: rgb(19, 45, 94);
+    padding: 15px 30px;
+    font-size: 1.5rem;
+    border: none;
+    font-weight: 700;
+    border-radius: 30px;
+    margin-top: 30px;
+    transition: 0.2s ease-in-out;
+    cursor: pointer;
+}
+.addedBookButtons button:hover {
+    background-color: rgb(12, 34, 75);
+    transition: 0.2s ease-in-out;
+}
+.addedBook h3{
+    margin-bottom: 8px;
+}
+.addedBook h4 {
+    font-size: 2rem;
+    font-weight: 500;
+    margin-bottom: 10px;
+}
+.addedBook p {
+    font-size: 1.7rem;
 }

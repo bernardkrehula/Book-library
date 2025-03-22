@@ -39,3 +39,69 @@ body {
     background-color: rgb(12, 34, 75);
     transition: 0.2s ease-in-out;
 }
+.bookInfo {
+    display: none;
+    position: absolute;
+    z-index: 1;
+    width: fit-content;
+    background-color: rgb(243, 243, 243);
+    color: black;
+    padding: 0px 40px;
+    padding-bottom: 70px;
+    border-radius: 30px;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    /* box-shadow: rgba(0, 0, 0, 0.4) 0 0 0 1000px; */
+}
+.bookInfo li {
+    display: flex;
+    list-style-type: none;
+    align-items: center;
+    margin-bottom: 10px;
+}
+.bookInfo li h4{
+    margin-right: 10px;
+    font-weight: 500;
+}
+.bookInfo li input{
+    width: 400px;
+    border: none;
+    background-color: white;
+    border-radius: 5px;
+    padding: 10px 15px;
+    margin-left: auto;
+    margin-right: 0;
+}
+.checkBoxDiv {
+    display: flex;
+    align-items: center;
+}
+.checkBoxDiv input {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+}
+.checkBoxDiv h4 {
+    font-weight: 500;
+}
+.sendBtn {
+    padding: 15px 30px;
+    font-size: 1.7rem;
+    border: none;
+    border-radius: 20px;
+    font-weight: 700;
+    background-color: rgb(19, 45, 94);
+    color: white;
+    margin-left: 20px;
+}
+.closeBookInfoBtn {
+   display: flex;
+   margin-left: auto;
+   margin-right: 0;
+   margin-top: 10px;
+   margin-bottom: 60px;
+   border: none;
+   font-size: 3rem;
+   margin-right: -20px;
+}

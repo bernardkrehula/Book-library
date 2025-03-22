@@ -12,6 +12,26 @@
         <h3>Use the button below to add to your library and watch your collection grow</h3>
         <button class="newBookBtn">New Book</button>
         <div class="books"></div>
+        <form class="bookInfo">
+            <button class="closeBookInfoBtn">X</button>
+            <li>
+                <h4>Title of the book:</h4>
+                <input placeholder="Harry Potter" class="bookTitle">
+            </li>
+            <li>
+                <h4>Author:</h4>
+                <input placeholder="J.K. Rowling" class="author"> 
+            </li>
+            <li>
+                <h4>Number of pages:</h4>
+                <input type="number" placeholder="500" class="pages">
+            </li>
+            
+            <div class="checkBoxDiv">
+                <input type="checkbox"><h4>Have you read this book?</h4>
+                <button class="sendBtn">Send</button>
+            </div>
+        </form>
     </div>
     <script src="script.js"></script>
 </body>

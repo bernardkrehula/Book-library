@@ -172,10 +172,11 @@ body {
 .addedBook p {
     font-size: 1.7rem;
 }
-.isRead {
+.addedBook input {
     display: flex;
-    align-items: center;
-}
-.isRead img{
-    margin-left: 5px;
+    margin: 0 auto;
+    margin-bottom: 10px;
+    padding: 5px 8px;
+    border-radius: 6px;
+    border: 1px solid gray;
 }

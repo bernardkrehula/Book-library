@@ -100,7 +100,34 @@ main.addEventListener('click', (e) => {
             booksDiv.removeChild(bookDiv);
         }
         if(bookBtns.className === 'editBtn'){
+            const clickedBook = manager.findBook(bookDiv.id);
+            if (clickedBook) {
+                let titleElement = bookDiv.querySelector('h3');
+                let authorElement = bookDiv.querySelector('h4');
+                let pagesElement = bookDiv.querySelector('p');
 
+                if (bookBtns.innerText === 'Edit') {
+                    titleElement.outerHTML = `<input type="text" class="editTitle" value="${titleElement.innerText}">`;
+                    authorElement.outerHTML = `<input type="text" class="editAuthor" value="${authorElement.innerText}">`;
+                    pagesElement.outerHTML = `<input type="number" class="editPages" value="${pagesElement.innerText}">`;
+
+                    bookBtns.innerText = 'Save';
+                } else {
+                    let newTitle = bookDiv.querySelector('.editTitle').value;
+                    let newAuthor = bookDiv.querySelector('.editAuthor').value;
+                    let newPages = bookDiv.querySelector('.editPages').value;
+
+                    clickedBook.getBookTitle = () => newTitle;
+                    clickedBook.getBookAuthor = () => newAuthor;
+                    clickedBook.getBookPages = () => newPages;
+
+                    bookDiv.querySelector('.editTitle').outerHTML = `<h3>${newTitle}</h3>`;
+                    bookDiv.querySelector('.editAuthor').outerHTML = `<h4>${newAuthor}</h4>`;
+                    bookDiv.querySelector('.editPages').outerHTML = `<p>${newPages}</p>`;
+
+                    bookBtns.innerText = 'Edit';
+                }
+            }
         }
         if(bookBtns.className === 'isRead'){
             const clickedBook = manager.findBook(bookDiv.id);

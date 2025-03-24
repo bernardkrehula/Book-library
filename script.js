@@ -7,18 +7,19 @@ const sendBtn = document.querySelector('.sendBtn');
 const checkBoxField = document.querySelector('.checkBox');
 
 
-function bookCreator(title, author, pages, isChecked) {
+function bookCreator(title, author, pages) {
     let id = crypto.randomUUID();
     let bookTitle = title;
     let bookAuthor = author;
     let bookPages = pages;
-    let checkBox = isChecked;
+    let checkBox = checkBoxField.checked ? 'Read ✅' : 'Unread ❌';
     const getId = () => { return id };
     const getBookTitle = () => { return bookTitle };
     const getBookAuthor = () => { return bookAuthor };
     const getBookPages = () => { return bookPages };
     const isBookRead = () => { return checkBox }
-    return { getId, getBookTitle, getBookAuthor, getBookPages, isBookRead };
+    const toggleBookRead = () =>  checkBox = (checkBox === 'Read ✅' ? 'Unread ❌' : 'Read ✅');
+    return { getId, getBookTitle, getBookAuthor, getBookPages, isBookRead, toggleBookRead };
 }
 //Uzet u obzir je li knjiga procitana ili nije, na unreadBtn dodati X ili kvacicu 
 //Dodat edit dugme, na click se svi podaci pretvaraju u input
@@ -35,17 +36,14 @@ function manageBooks() {
         books = books.filter(book => book.getId() != bookId);
         return books;
     }
-    const isBookRead = () => {
-        if(checkBoxField.checked == true){
-            return 'Read';
-        }
-        if(checkBoxField.checked == false) {
-            return 'Unread';
-        }
+    const findBook = (id) => {
+        let filter = books.find(book => book.getId() == id);
+        return filter;
     }
+  
     const returnArray = () => { return books };
 
-    return { pushBooksInArray, returnArray, removeBookFromArray, isBookRead };
+    return { pushBooksInArray, returnArray, removeBookFromArray, findBook };
 }
 const manager = manageBooks();
 
@@ -77,7 +75,7 @@ bookForm.addEventListener('submit', (e) => {
     let author = document.querySelector('.author').value;
     let bookPages = document.querySelector('.pages').value;
     
-    const newBook = bookCreator(bookTitle, author, bookPages, manager.isBookRead());
+    const newBook = bookCreator(bookTitle, author, bookPages);
     manager.pushBooksInArray(newBook);
     displayNewBook(newBook); 
 
@@ -105,11 +103,10 @@ main.addEventListener('click', (e) => {
 
         }
         if(bookBtns.className === 'isRead'){
-            if(bookBtns.textContent === 'Read'){
-                bookBtns.innerText = 'Unread';
-            }
-            else {
-                bookBtns.innerText = 'Read';
+            const clickedBook = manager.findBook(bookDiv.id);
+            if (clickedBook) {
+                clickedBook.toggleBookRead(); 
+                bookBtns.innerHTML = clickedBook.isBookRead();
             }
         }
     }

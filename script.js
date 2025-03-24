@@ -7,24 +7,26 @@ const sendBtn = document.querySelector('.sendBtn');
 const checkBoxField = document.querySelector('.checkBox');
 
 
-function bookCreator(title, author, pages) {
+function bookCreator(title, author, pages, checkBoxField) {
     let id = crypto.randomUUID();
     let bookTitle = title;
     let bookAuthor = author;
     let bookPages = pages;
-    let checkBox = checkBoxField.checked ? 'Read ✅' : 'Unread ❌';
+    let checkBox = checkBoxField;
+ 
     const getId = () => { return id };
     const getBookTitle = () => { return bookTitle };
     const getBookAuthor = () => { return bookAuthor };
     const getBookPages = () => { return bookPages };
     const isBookRead = () => { return checkBox }
-    const toggleBookRead = () =>  checkBox = (checkBox === 'Read ✅' ? 'Unread ❌' : 'Read ✅');
+    const toggleBookRead = (value) =>  checkBox = value;
     return { getId, getBookTitle, getBookAuthor, getBookPages, isBookRead, toggleBookRead };
 }
 //Uzet u obzir je li knjiga procitana ili nije, na unreadBtn dodati X ili kvacicu 
 //Dodat edit dugme, na click se svi podaci pretvaraju u input
 //Dodat da se moze izbrisati knjiga
 //Napraviti formu umjesto diva
+//Dodam varijablu sa state true ili false
 
 function manageBooks() {
     let books = [];
@@ -40,10 +42,12 @@ function manageBooks() {
         let filter = books.find(book => book.getId() == id);
         return filter;
     }
-  
+    const renderBooks = (isChecked) => {
+        return isChecked ? "Read ✅" : "Unread ❌";
+    }
     const returnArray = () => { return books };
 
-    return { pushBooksInArray, returnArray, removeBookFromArray, findBook };
+    return { pushBooksInArray, returnArray, removeBookFromArray, findBook, renderBooks };
 }
 const manager = manageBooks();
 
@@ -54,7 +58,7 @@ function displayNewBook(book){
             <h4>${book.getBookAuthor()}</h4>
             <p>${book.getBookPages()}</p>
             <div class="addedBookButtons">
-                <button class="isRead">${book.isBookRead()}</button>
+                <button class="isRead">${manager.renderBooks(book.isBookRead())}</button>
                 <button class="delete">Delete Book</button>
                 <button class="editBtn">Edit</button>
             </div>
@@ -75,7 +79,7 @@ bookForm.addEventListener('submit', (e) => {
     let author = document.querySelector('.author').value;
     let bookPages = document.querySelector('.pages').value;
     
-    const newBook = bookCreator(bookTitle, author, bookPages);
+    const newBook = bookCreator(bookTitle, author, bookPages, checkBoxField.checked);
     manager.pushBooksInArray(newBook);
     displayNewBook(newBook); 
 
@@ -101,17 +105,21 @@ main.addEventListener('click', (e) => {
         }
         if(bookBtns.className === 'editBtn'){
             const clickedBook = manager.findBook(bookDiv.id);
+          
+            let isEditing = bookBtns;
             if (clickedBook) {
                 let titleElement = bookDiv.querySelector('h3');
                 let authorElement = bookDiv.querySelector('h4');
                 let pagesElement = bookDiv.querySelector('p');
-
-                if (bookBtns.innerText === 'Edit') {
+                // 2 state isChecked i isEditing
+                if (isEditing) {
                     titleElement.outerHTML = `<input type="text" class="editTitle" value="${titleElement.innerText}">`;
                     authorElement.outerHTML = `<input type="text" class="editAuthor" value="${authorElement.innerText}">`;
                     pagesElement.outerHTML = `<input type="number" class="editPages" value="${pagesElement.innerText}">`;
 
                     bookBtns.innerText = 'Save';
+
+                    isEditing = false;
                 } else {
                     let newTitle = bookDiv.querySelector('.editTitle').value;
                     let newAuthor = bookDiv.querySelector('.editAuthor').value;
@@ -130,11 +138,9 @@ main.addEventListener('click', (e) => {
             }
         }
         if(bookBtns.className === 'isRead'){
-            const clickedBook = manager.findBook(bookDiv.id);
-            if (clickedBook) {
-                clickedBook.toggleBookRead(); 
-                bookBtns.innerHTML = clickedBook.isBookRead();
-            }
+            let clickedBook = manager.findBook(bookDiv.id);
+            clickedBook.toggleBookRead(!clickedBook.isBookRead()); 
+            bookBtns.innerHTML = manager.renderBooks(clickedBook.isBookRead()); 
         }
     }
 })

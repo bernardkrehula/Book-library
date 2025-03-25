@@ -13,6 +13,7 @@ function bookCreator(title, author, pages, checkBoxField) {
     let bookAuthor = author;
     let bookPages = pages;
     let checkBox = checkBoxField;
+    let edited = true;
  
     const getId = () => { return id };
     const getBookTitle = () => { return bookTitle };
@@ -20,7 +21,9 @@ function bookCreator(title, author, pages, checkBoxField) {
     const getBookPages = () => { return bookPages };
     const isBookRead = () => { return checkBox }
     const toggleBookRead = (value) =>  checkBox = value;
-    return { getId, getBookTitle, getBookAuthor, getBookPages, isBookRead, toggleBookRead };
+    const isEdited = () => { return edited };
+    const toggleIsEdited = (value) => edited = value;
+    return { getId, getBookTitle, getBookAuthor, getBookPages, isBookRead, toggleBookRead, isEdited, toggleIsEdited };
 }
 //Uzet u obzir je li knjiga procitana ili nije, na unreadBtn dodati X ili kvacicu 
 //Dodat edit dugme, na click se svi podaci pretvaraju u input
@@ -106,20 +109,19 @@ main.addEventListener('click', (e) => {
         if(bookBtns.className === 'editBtn'){
             const clickedBook = manager.findBook(bookDiv.id);
           
-            let isEditing = bookBtns;
             if (clickedBook) {
                 let titleElement = bookDiv.querySelector('h3');
                 let authorElement = bookDiv.querySelector('h4');
                 let pagesElement = bookDiv.querySelector('p');
-                // 2 state isChecked i isEditing
-                if (isEditing) {
+    
+                if (clickedBook.isEdited() == true) {
+                    
                     titleElement.outerHTML = `<input type="text" class="editTitle" value="${titleElement.innerText}">`;
                     authorElement.outerHTML = `<input type="text" class="editAuthor" value="${authorElement.innerText}">`;
                     pagesElement.outerHTML = `<input type="number" class="editPages" value="${pagesElement.innerText}">`;
 
                     bookBtns.innerText = 'Save';
-
-                    isEditing = false;
+                    clickedBook.toggleIsEdited(false);
                 } else {
                     let newTitle = bookDiv.querySelector('.editTitle').value;
                     let newAuthor = bookDiv.querySelector('.editAuthor').value;
@@ -132,7 +134,7 @@ main.addEventListener('click', (e) => {
                     bookDiv.querySelector('.editTitle').outerHTML = `<h3>${newTitle}</h3>`;
                     bookDiv.querySelector('.editAuthor').outerHTML = `<h4>${newAuthor}</h4>`;
                     bookDiv.querySelector('.editPages').outerHTML = `<p>${newPages}</p>`;
-
+                    clickedBook.toggleIsEdited(true)
                     bookBtns.innerText = 'Edit';
                 }
             }

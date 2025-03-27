@@ -17,13 +17,16 @@ function bookCreator(title, author, pages, checkBoxField) {
  
     const getId = () => { return id };
     const getBookTitle = () => { return bookTitle };
+    const toggleBookTitle = (value) => { bookTitle = value };
     const getBookAuthor = () => { return bookAuthor };
+    const toggleBookAuthor = (value) => { bookAuthor = value };
     const getBookPages = () => { return bookPages };
+    const toggleBookPages = (value) => { bookPages = value };
     const isBookRead = () => { return checkBox }
     const toggleBookRead = (value) =>  checkBox = value;
     const isEdited = () => { return edited };
     const toggleIsEdited = (value) => edited = value;
-    return { getId, getBookTitle, getBookAuthor, getBookPages, isBookRead, toggleBookRead, isEdited, toggleIsEdited };
+    return { getId, getBookTitle, toggleBookTitle, getBookAuthor, toggleBookAuthor, getBookPages, toggleBookPages, isBookRead, toggleBookRead, isEdited, toggleIsEdited };
 }
 
 function manageBooks() {
@@ -40,12 +43,9 @@ function manageBooks() {
         let filter = books.find(book => book.getId() == id);
         return filter;
     }
-    const renderBooks = (isChecked) => {
-        return isChecked ? "Read ✅" : "Unread ❌";
-    }
     const returnArray = () => { return books };
 
-    return { pushBooksInArray, returnArray, removeBookFromArray, findBook, renderBooks };
+    return { pushBooksInArray, returnArray, removeBookFromArray, findBook };
 }
 const manager = manageBooks();
 
@@ -56,7 +56,7 @@ function displayNewBook(book){
             <h4>${book.getBookAuthor()}</h4>
             <p>${book.getBookPages()}</p>
             <div class="addedBookButtons">
-                <button class="isRead">${manager.renderBooks(book.isBookRead())}</button>
+                <button class="isRead">${book.isBookRead() ? "Read ✅" : "Unread ❌"}</button>
                 <button class="delete">Delete Book</button>
                 <button class="editBtn">Edit</button>
             </div>
@@ -95,8 +95,7 @@ closeBookFormBtn.addEventListener('click', () => {
 main.addEventListener('click', (e) => {
     let bookBtns = e.target.closest('button');
     let bookDiv = e.target.closest('.addedBook');
-   
-    if(bookBtns){
+    if(!bookBtns) return
         if(bookBtns.className === 'delete'){
             manager.removeBookFromArray(bookDiv.id);
             booksDiv.removeChild(bookDiv);
@@ -117,34 +116,33 @@ main.addEventListener('click', (e) => {
                     <input type="text" class="editAuthor" value="${clickedBook.getBookAuthor()}">
                     <input type="number" class="editPages" value="${clickedBook.getBookPages()}">
                     <div class="addedBookButtons">
-                        <button type="button" class="isRead">${manager.renderBooks(clickedBook.isBookRead())}</button>
+                        <button type="button" class="isRead">${clickedBook.isBookRead() ? "Read ✅" : "Unread ❌"}</button>
                         <button type="button" class="delete">Delete Book</button>
                         <button type="submit" class="editBtn">Save</button>
                     </div>
                 `;
-
+               
                 bookDiv.replaceWith(editForm);
 
-                editForm.addEventListener('submit', function (event) {
-                    event.preventDefault();
-
+                editForm.addEventListener('submit', function handleFormEvent(e) {
+                    e.preventDefault();
                     let newTitle = editForm.querySelector('.editTitle').value;
                     let newAuthor = editForm.querySelector('.editAuthor').value;
                     let newPages = editForm.querySelector('.editPages').value;
-
-                    clickedBook.getBookTitle = () => newTitle;
-                    clickedBook.getBookAuthor = () => newAuthor;
-                    clickedBook.getBookPages = () => newPages;
-
+    
+                    clickedBook.toggleBookTitle(newTitle);
+                    clickedBook.toggleBookAuthor(newAuthor);
+                    clickedBook.toggleBookRead(newPages);
+    
                     const newBookDiv = document.createElement('div');
                     newBookDiv.id = editForm.id;
                     newBookDiv.classList = editForm.classList;
                     newBookDiv.innerHTML = `
-                        <h3>${newTitle}</h3>
-                        <h4>${newAuthor}</h4>
-                        <p>${newPages}</p>
+                        <h3>${clickedBook.getBookTitle()}</h3>
+                        <h4>${clickedBook.getBookAuthor()}</h4>
+                        <p>${clickedBook.getBookPages()}</p>
                         <div class="addedBookButtons">
-                            <button class="isRead">${manager.renderBooks(clickedBook.isBookRead())}</button>
+                            <button class="isRead">${clickedBook.isBookRead() ? "Read ✅" : "Unread ❌"}</button>
                             <button class="delete">Delete Book</button>
                             <button class="editBtn">Edit</button>
                         </div>
@@ -160,5 +158,4 @@ main.addEventListener('click', (e) => {
             clickedBook.toggleBookRead(!clickedBook.isBookRead()); 
             bookBtns.innerHTML = manager.renderBooks(clickedBook.isBookRead()); 
         }
-    }
 })

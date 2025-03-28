@@ -147,10 +147,10 @@ main.addEventListener('click', (e) => {
                             <button class="editBtn">Edit</button>
                         </div>
                     `;
-
+                    editForm.removeEventListener('submit', handleFormEvent);
                     editForm.replaceWith(newBookDiv);
                     clickedBook.toggleIsEdited(false);
-                });
+                }); 
             }
         }
         if(bookBtns.className === 'isRead'){

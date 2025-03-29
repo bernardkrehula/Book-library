@@ -43,13 +43,22 @@ function manageBooks() {
         let filter = books.find(book => book.getId() == id);
         return filter;
     }
+    const iterateThroughArray = () => {
+        books.forEach((book) => {
+            displayNewBook(book);
+        })
+    }
     const returnArray = () => { return books };
 
-    return { pushBooksInArray, returnArray, removeBookFromArray, findBook };
+    return { pushBooksInArray, returnArray, removeBookFromArray, findBook, iterateThroughArray };
 }
 const manager = manageBooks();
 
 function displayNewBook(book){
+    //Display book funkcija odraduje sav posao
+    //U vezi prikazivanja elemenata
+    //Books.innerHtml = '';
+    //Uz pomoc petlje prodes preko arraya knjiga
     let html = `
     <div class="addedBook" id="${book.getId()}">
             <h3>${book.getBookTitle()}</h3>
@@ -79,13 +88,14 @@ bookForm.addEventListener('submit', (e) => {
     
     const newBook = bookCreator(bookTitle, author, bookPages, checkBoxField.checked);
     manager.pushBooksInArray(newBook);
-    displayNewBook(newBook); 
 
     bookTitle = document.querySelector('.bookTitle').value = '';
     author = document.querySelector('.author').value = '';
     bookPages = document.querySelector('.pages').value = '';
     
     checkBoxField.checked = false;
+    booksDiv.innerHTML = '';
+    manager.iterateThroughArray();
 })
 
 closeBookFormBtn.addEventListener('click', () => {
@@ -98,7 +108,8 @@ main.addEventListener('click', (e) => {
     if(!bookBtns) return
         if(bookBtns.className === 'delete'){
             manager.removeBookFromArray(bookDiv.id);
-            booksDiv.removeChild(bookDiv);
+            booksDiv.innerHTML = '';
+            manager.iterateThroughArray();
         }
         if(bookBtns.className === 'editBtn'){
             const clickedBook = manager.findBook(bookDiv.id);
@@ -124,7 +135,7 @@ main.addEventListener('click', (e) => {
                
                 bookDiv.replaceWith(editForm);
 
-                editForm.addEventListener('submit', function handleFormEvent(e) {
+                function handleFormEvent(e) {
                     e.preventDefault();
                     let newTitle = editForm.querySelector('.editTitle').value;
                     let newAuthor = editForm.querySelector('.editAuthor').value;
@@ -147,10 +158,10 @@ main.addEventListener('click', (e) => {
                             <button class="editBtn">Edit</button>
                         </div>
                     `;
-                    editForm.removeEventListener('submit', handleFormEvent);
                     editForm.replaceWith(newBookDiv);
                     clickedBook.toggleIsEdited(false);
-                }); 
+                }
+                editForm.addEventListener('submit', handleFormEvent); 
             }
         }
         if(bookBtns.className === 'isRead'){

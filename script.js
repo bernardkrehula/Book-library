@@ -116,20 +116,18 @@ main.addEventListener('click', (e) => {
                 const editForm = document.createElement('form');
                 editForm.id = bookDiv.id;
                 editForm.classList = bookDiv.classList;
-
-                editForm.innerHTML = `
-                    <input type="text" class="editTitle" value="${clickedBook.getBookTitle()}">
-                    <input type="text" class="editAuthor" value="${clickedBook.getBookAuthor()}">
-                    <input type="number" class="editPages" value="${clickedBook.getBookPages()}">
-                    <div class="addedBookButtons">
-                        <button type="button" class="isRead">${clickedBook.isBookRead() ? "Read ✅" : "Unread ❌"}</button>
-                        <button type="button" class="delete">Delete Book</button>
-                        <button type="submit" class="editBtn">Save</button>
-                    </div>
+                editForm.innerHTML =  `
+                <input type="text" class="editTitle" value="${clickedBook.getBookTitle()}">
+                <input type="text" class="editAuthor" value="${clickedBook.getBookAuthor()}">
+                <input type="number" class="editPages" value="${clickedBook.getBookPages()}">
+                <div class="addedBookButtons">
+                    <button type="button" class="isRead">${clickedBook.isBookRead() ? "Read ✅" : "Unread ❌"}</button>
+                    <button type="button" class="delete">Delete Book</button>
+                    <button type="submit" class="editBtn">Save</button>
+                </div>
                 `;
-               
                 bookDiv.replaceWith(editForm);
-
+            
                 function handleFormEvent(e) {
                     e.preventDefault();
                     let newTitle = editForm.querySelector('.editTitle').value;
@@ -139,22 +137,9 @@ main.addEventListener('click', (e) => {
                     clickedBook.toggleBookTitle(newTitle);
                     clickedBook.toggleBookAuthor(newAuthor);
                     clickedBook.toggleBookRead(newPages);
-    
-                    const newBookDiv = document.createElement('div');
-                    newBookDiv.id = editForm.id;
-                    newBookDiv.classList = editForm.classList;
-                    newBookDiv.innerHTML = `
-                        <h3>${clickedBook.getBookTitle()}</h3>
-                        <h4>${clickedBook.getBookAuthor()}</h4>
-                        <p>${clickedBook.getBookPages()}</p>
-                        <div class="addedBookButtons">
-                            <button class="isRead">${clickedBook.isBookRead() ? "Read ✅" : "Unread ❌"}</button>
-                            <button class="delete">Delete Book</button>
-                            <button class="editBtn">Edit</button>
-                        </div>
-                    `;
-                    editForm.replaceWith(newBookDiv);
+
                     clickedBook.toggleIsEdited(false);
+                    manager.iterateThroughArray();
                 }
                 editForm.addEventListener('submit', handleFormEvent); 
             }

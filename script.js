@@ -44,6 +44,7 @@ function manageBooks() {
         return filter;
     }
     const iterateThroughArray = () => {
+        booksDiv.innerHTML = '';
         books.forEach((book) => {
             displayNewBook(book);
         })
@@ -55,10 +56,6 @@ function manageBooks() {
 const manager = manageBooks();
 
 function displayNewBook(book){
-    //Display book funkcija odraduje sav posao
-    //U vezi prikazivanja elemenata
-    //Books.innerHtml = '';
-    //Uz pomoc petlje prodes preko arraya knjiga
     let html = `
     <div class="addedBook" id="${book.getId()}">
             <h3>${book.getBookTitle()}</h3>
@@ -94,7 +91,6 @@ bookForm.addEventListener('submit', (e) => {
     bookPages = document.querySelector('.pages').value = '';
     
     checkBoxField.checked = false;
-    booksDiv.innerHTML = '';
     manager.iterateThroughArray();
 })
 
@@ -108,7 +104,6 @@ main.addEventListener('click', (e) => {
     if(!bookBtns) return
         if(bookBtns.className === 'delete'){
             manager.removeBookFromArray(bookDiv.id);
-            booksDiv.innerHTML = '';
             manager.iterateThroughArray();
         }
         if(bookBtns.className === 'editBtn'){
@@ -166,7 +161,7 @@ main.addEventListener('click', (e) => {
         }
         if(bookBtns.className === 'isRead'){
             let clickedBook = manager.findBook(bookDiv.id);
-            clickedBook.toggleBookRead(!clickedBook.isBookRead()); 
-            bookBtns.innerHTML = manager.renderBooks(clickedBook.isBookRead()); 
+            clickedBook.toggleBookRead(!clickedBook.isBookRead());
+            manager.iterateThroughArray();
         }
 })
